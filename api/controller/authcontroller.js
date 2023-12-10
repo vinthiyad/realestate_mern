@@ -28,7 +28,7 @@ const {email, password}  = req.body;
    if(!validPassword){
     return next(errorHandler(401, "Invalid Credentials"));
    }
-   const token = jwt.sign({id:validUser} , process.env.JWT_SECRET_KEY);
+   const token = jwt.sign({id:validUser._id} , process.env.JWT_SECRET_KEY);
    const  {password: pass , ...restdata}  =  validUser._doc;
 
    res
@@ -44,26 +44,33 @@ const {email, password}  = req.body;
 
 export const google = async(req,res, next) =>{
  try{
-    const user = await User.findOne({email : req.body.email});
-    if(user){
-      const token = jwt.sign({id:validUser} , process.env.JWT_SECRET_KEY);
+    const validUser = await User.findOne({email : req.body.email});
+    if(validUser){
+      console.log("if f ")
+      const token = jwt.sign({id:validUser._id} , process.env.JWT_SECRET_KEY);
       const  {password: pass , ...restdata}  =  validUser._doc;
+      console.log("ifff  dat ",restdata)
       res
       .cookie("token" ,token, {httpOnly : true})
       .status(200)
       .json(restdata);
     }else{
+      console.log("else ")
       const generatePassword = Math.random().toString(36).slice(-8)+Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatePassword , 10);
-      const newUser = new User(
-         {username: req.body.name.split(' ').join('').toLowercase()+
-         Math.random().toString(36).slice(-8) ,
+      console.log("else req.body.name--->",req.body.name,"req.body.email ",req.body.email,"hashedPassword  ",hashedPassword)
+      const newUser = new User({
+      username:  
+              req.body.name.split(' ').join('').toLowerCase()+
+              Math.random().toString(36).slice(-8) ,
       email : req.body.email,
-      password : hashedPassword
+      password : hashedPassword,
+      avatar : req.body.photo, 
    });
      await newUser.save();
      const token = jwt.sign({id:newUser._id} , process.env.JWT_SECRET_KEY);
      const  {password: pass , ...restdata}  =  newUser._doc;
+     console.log("else dat ",restdata)
      res
      .cookie("token" ,token, {httpOnly : true})
      .status(200)
