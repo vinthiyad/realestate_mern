@@ -6,6 +6,7 @@ import {
   signinstart,
   signinsuccess,
   signinfailure} from '../redux/user/userSlice.js';
+import { OAuth } from '../components/OAuth.jsx';
  
 const SignIn = () => {
 const navigate = useNavigate();
@@ -61,6 +62,7 @@ const handleSubmit = async (e) =>{
       <button disabled = {loading} className='text-white bg-slate-600 disabled:opacity-50 hover:opacity-80 p-3 border rounded-lg uppercase'>
       {loading ? "Loading..."  : "Sign In"} 
       </button>
+      <OAuth />
       </form> 
       <div className='mt-3'>
         <span className='pr-3'> Dont have an account ?</span>

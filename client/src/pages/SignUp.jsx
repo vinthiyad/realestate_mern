@@ -1,5 +1,6 @@
  import { useState } from 'react'
 import {Link , useNavigate}  from 'react-router-dom'
+import { OAuth } from '../components/OAuth';
  
 const SignUp = () => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const handleSubmit = async (e) =>{
       <button disabled = {loading} className='text-white bg-slate-600 disabled:opacity-50 hover:opacity-80 p-3 border rounded-lg uppercase'>
          {loading ? "Loading..."  : "Sign Up"}
       </button>
+      <OAuth />
       </form> 
       <div className='mt-3'>
         <span className='pr-3'> Have an account ?</span>
