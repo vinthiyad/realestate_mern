@@ -12,11 +12,11 @@ const handleGoogleLogin  = async () =>{
     const provider = new GoogleAuthProvider();
     const auth  = getAuth(app);
     const result =  await signInWithPopup(auth  , provider);
-    console.log("result -->" , result)
-   const res = await fetch("/api/auth/google" , {
+    console.log("result   ",result.user.displayName,"email -->" ,result.user.email)
+    const res = await fetch("/api/auth/google" , {
      method:"POST",
      headers:{
-      Content_Type : "application/json"
+      "Content-Type" : "application/json"
      },
      body: JSON.stringify({
       name:result.user.displayName  ,
@@ -26,11 +26,13 @@ const handleGoogleLogin  = async () =>{
 
    });
     const data = await res.json();
+    console.log("data  -->" , data)
+    
     dispatch(signinsuccess(data));
     navigate("/");
     }catch (error){
         console.log("Cannot able to Login with Google" , error);
-    }
+   }
 }
 
 
